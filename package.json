@@ -1,0 +1,11 @@
+{
+  "name": "ceramite",
+  "version": "1.0.0",
+  "description": "frontend for mithril",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "EJCarron",
+  "license": "ISC"
+}
