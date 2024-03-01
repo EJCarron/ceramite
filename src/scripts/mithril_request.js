@@ -6,6 +6,7 @@ function handle_success(response){
     var modal = document.getElementById("modal")
 var modal_btn = document.getElementById("modal_btn")
 var modal_message = document.getElementById("modal_message")
+}
 
 modal_btn.onclick = function(){
     modal.style.display = "none"
@@ -15,7 +16,6 @@ modal_btn.onclick = function(){
 
     modal.style.display = "block"
 
-}
 
 function handl_error(reponse){
     var modal = document.getElementById("modal")
@@ -38,6 +38,24 @@ function send_mithril_request(request_body, function_name, success_function){
 
     $.ajax({type:"POST", url: request_url, contentType: "application/json; charset=utf-8"
     , data: JSON.stringify(request_body), success: success_function, error: handl_error})
+
+}
+
+function search_ol_db_btn_onclick(){
+
+    const json_path = document.getElementById("json_path_input").value
+
+    function display_found_matches(data){
+
+    }
+
+
+    if (json_path != ""){
+
+        send_mithril_request({"json_path": json_path}, "find_ol_connections", display_found_matches)
+    }
+    
+
 
 }
 

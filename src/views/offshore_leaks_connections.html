@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offshore Leaks Connections</title>
+    <link rel="stylesheet" href="../styles/modal.css">
+</head>
+<body>
+    <div id="modal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+          <p id="modal_message"></p>
+          <button id="modal_btn">OKAY</button>
+        </div>
+      
+      </div>
+    <a href="../../public/index.html">
+        <button><-- BACK</button>
+    </a>
+    <h1>Find connections in the Offshore leaks Database</h1>
+    <input id="json_path_input" placeholder="network json path"></input>
+    <hr>
+    <div id="connections_container"></div>
+    <hr>
+    <button onclick="search_ol_db_btn_onclick()">SEARCH</button>
+    <button onclick="add_selected_matched_btn_onclick()">ADD SELECTED MATCHES</button>
+    <button onclick="reset_search_ol_db_for_connections_page_btn_onclick()">RESET</button>
+    <script src="../scripts/mithril_request.js"></script>
+</body>
+</html>
