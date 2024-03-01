@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Network</title>
+    <link rel="stylesheet" href="../styles/modal.css">
+    <link rel="stylesheet" href="../styles/switch.css">
+    <!-- <link rel="stylesheet" href="../styles/counter.css"> -->
+    
+
+</head>
+<body>
+    <div id="modal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+          <p id="modal_message"></p>
+          <button id="modal_btn">OKAY</button>
+        </div>
+      
+      </div>
+    <a href="../../public/index.html">
+        <button><-- BACK</button>
+    </a>
+    <h1>Create Network</h1>
+    <button onclick="add_choid_input()">Add Companies House Officer ID</button>
+    <div id="choid_inputs"></div>
+    <hr>
+    <button onclick="add_chcn_input()">Add Companies House Company Number</button>
+    <div id="chcn_inputs"></div>
+    <hr>
+    <button onclick="add_olnid_input()">Add Offshore Leaks Node ID</button>
+    <div id="olnid_inputs"></div>
+    <hr>
+    <button onclick="add_same_as_input()">Add same as relationship</button>
+    <div id="same_as_inputs"></div>
+    <hr>
+    <p>Expand Network</p>
+    <div class="frame">
+        <div class="center container">
+              <div class="button col col-1">
+                  <button id="minus-btn">-</button>
+              </div>
+              <div class="number col col-2">
+                  <p id="count">0</p>
+              </div>
+              <div class="button col col-1">
+                  <button id="plus-btn">+</button>
+            </div>
+          </div>
+      </div>
+    <hr>
+    <p>Save json path</p>
+    <input id="save_json_input"></input>
+    <hr>
+    <p>Save csvs directory path</p>
+    <input id="save_csvs_input"></input>
+    <hr>
+    <p>Save xlsx path</p>
+    <input id="save_xlsx_input"></input>
+    <hr>
+    <p>
+        Save to Neo4j
+    </p>
+    <label class="switch">
+        <input id="save_neo4j_switch" type="checkbox">
+        <span class="slider"></span>
+    </label>
+    <hr>
+    <p>Overwrite Neo4j</p>
+    <label class="switch">
+        <input id="overwrite_neo4j_switch" type="checkbox">
+        <span class="slider"></span>
+    </label>
+
+
+    <hr>
+    <button id="submit_btn" onclick="create_network_submit_btn_onclick()">CREATE</button>
+
+    <script src="../scripts/mithril_request.js"></script>
+    <script>
+        let minusBtn = document.getElementById("minus-btn");
+        let count = document.getElementById("count");
+        let plusBtn = document.getElementById("plus-btn");
+
+        let countNum = 0;
+        count.innerHTML = countNum;
+
+        minusBtn.addEventListener("click", () => {
+            if (countNum > 0){
+            countNum -= 1;
+            count.innerHTML = countNum;
+            }
+        });
+
+        plusBtn.addEventListener("click", () => {
+            countNum += 1;
+            count.innerHTML = countNum;
+        });
+
+
+        function add_choid_input(){
+        var choid_input = document.createElement("input")
+        choid_input.className = 'choid_input'
+        document.getElementById("choid_inputs").appendChild(choid_input)
+
+        }
+
+        function add_chcn_input(){
+            var chcn_input = document.createElement("input")
+            chcn_input.className = 'chcn_input'
+            document.getElementById("chcn_inputs").appendChild(chcn_input)
+
+        }
+
+        function add_olnid_input(){
+            var olnid_input = document.createElement("input")
+            olnid_input.className = 'olnid_input'
+            document.getElementById("olnid_inputs").appendChild(olnid_input)
+
+        }
+
+        function add_same_as_input(){
+            var same_as_input = document.createElement("input")
+            same_as_input.className = 'same_as_input'
+            same_as_input.placeholder = 'parent_node_id , child_node_id'
+            same_as_input.type = "text"
+            same_as_input.size = "50"
+            document.getElementById("same_as_inputs").appendChild(same_as_input)
+
+        }
+
+
+    </script>
+</body>
+</html>
