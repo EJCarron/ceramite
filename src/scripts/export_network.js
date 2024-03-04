@@ -8,13 +8,14 @@ function success_handler(data){
 
     modal_btn.onclick = function(){
         modal.style.display = "none"
+        window.location.href = '../../public/index.html';
     }
 
     modal_message.innerText = "export complete"
 
     modal.style.display = "block"
 
-    window.location.href = '../../public/index.html';
+    
 }
 
 
