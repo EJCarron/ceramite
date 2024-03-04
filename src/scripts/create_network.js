@@ -2,6 +2,9 @@ const mithril_request = require("../scripts/mithril_request")
 
 
 function create_network_submit_btn_onclick(){
+
+    const network_name = document.getElementById("name_input").value
+
     const choid_inputs = document.getElementsByClassName("choid_input")
     const chcn_inputs = document.getElementsByClassName("chcn_input")
     const olnid_inputs = document.getElementsByClassName("olnid_input")
@@ -18,6 +21,7 @@ function create_network_submit_btn_onclick(){
 
     var request_body = {}
 
+    if (network_name != "") {request_body['network_name'] = network_name}
     if (expands > 0){ request_body['expand'] = expands}
     if (save_json_path != "") {request_body['save_json_path'] = save_json_path}
     if (save_csvs_path != "") {request_body['save_csvs_path'] = csvs_path}
