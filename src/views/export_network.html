@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export Network</title>
+    <link rel="stylesheet" href="../styles/modal.css">
+    <link rel="stylesheet" href="../styles/switch.css">
+</head>
+<body>
+    <div id="modal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <p id="modal_message"></p>
+          <button id="modal_btn">OKAY</button>
+        </div>
+      </div>
+    <a href="../../public/index.html">
+        <button><-- BACK</button>
+    </a>
+    <h1>Export Network</h1>
+    <input id="json_path_input" placeholder="network json path"></input>
+    <hr>
+    <p>Save csvs directory path</p>
+    <input id="save_csvs_input"></input>
+    <hr>
+    <p>Save xlsx path</p>
+    <input id="save_xlsx_input"></input>
+    <hr>
+    <p>
+        Save to Neo4j
+    </p>
+    <label class="switch">
+        <input id="save_neo4j_switch" type="checkbox">
+        <span class="slider"></span>
+    </label>
+    <hr>
+    <p>Overwrite Neo4j</p>
+    <label class="switch">
+        <input id="overwrite_neo4j_switch" type="checkbox">
+        <span class="slider"></span>
+    </label>
+    <hr>
+    <button id="submit_btn" onclick="export_network_submit_btn_onclick()">CREATE</button>
+    <script src="../scripts/export_network.js"></script>
+</body>
+</html>
