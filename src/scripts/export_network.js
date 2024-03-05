@@ -1,27 +1,30 @@
 const mithril_request = require("../scripts/mithril_request")
+const autocomplete = require("../scripts/autocomplete")
+const local_data = require("../scripts/local_data")
+const modals = require("../scripts/modals")
+
+const network_names = local_data.get_network_name_list()
+
+autocomplete.autocomplete(document.getElementById("networkNameInput"), network_names)
 
 function success_handler(data){
-    var modal = document.getElementById("modal")
-    var modal_btn = document.getElementById("modal_btn")
-    var modal_message = document.getElementById("modal_message")
 
-
-    modal_btn.onclick = function(){
+    modals.show_modal('export complete', function(){
         modal.style.display = "none"
         window.location.href = '../../public/index.html';
-    }
-
-    modal_message.innerText = "export complete"
-
-    modal.style.display = "block"
-
-    
+    })
 }
-
 
 function export_network_submit_btn_onclick(){
 
-    const json_path = document.getElementById("json_path_input").value
+    const network_name = document.getElementById('networkNameInput').value
+
+    if (network_name == ""){
+        modals.show_modal('NEED to select network name', modals.close_modal)
+        return false;
+    }
+
+    const network = local_data.get_network(network_name)
 
     const save_csvs_path = document.getElementById("save_csvs_input").value
     const save_xlsx_path = document.getElementById("save_xlsx_input").value
@@ -29,9 +32,9 @@ function export_network_submit_btn_onclick(){
     const save_neo4j = document.getElementById("save_neo4j_switch").checked
     const overwrite_neo4j = document.getElementById("overwrite_neo4j_switch").checked
 
-    var request_body = {}
+    var request_body = {'network': network}
 
-    if (json_path != "") {request_body['json_path'] = json_path}
+    
     if (save_csvs_path != "") {request_body['save_csvs_path'] = save_csvs_path}
     if (save_xlsx_path != "") {request_body['save_xlsx_path'] = save_xlsx_path}
     if (save_neo4j) {request_body['save_neo4j'] = save_neo4j}
