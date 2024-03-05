@@ -1,23 +1,31 @@
 const f = require("../scripts/mithril_request");
+const local_data = require("../scripts/local_data")
+const modals = require("../scripts/modals")
+const autocomplete = require("../scripts/autocomplete")
+
+const network_names = local_data.get_network_name_list()
+
+autocomplete.autocomplete(document.getElementById("networkNameInput"), network_names)
 
 function search_ol_db_btn_onclick(){
 
-    const json_path = document.getElementById("json_path_input").value;
+    const network_name = document.getElementById('networkNameInput').value
+
+    if (network_name == ""){
+        modals.show_modal('NEED to select network name', modals.close_modal)
+        return false;
+    }
+
+    const network = local_data.get_network(network_name)
     
-    if (json_path != ""){
-        f.send_mithril_request({"json_path": json_path}, "find_ol_connections", display_found_matches);
-    };
+    document.network = network
+
+    f.send_mithril_request(request_body={"network": network}, 
+    function_name="find_ol_connections", 
+    success_functiopn=display_found_matches, 
+    error_function=modals.error_modal);
+    
 };
-
-// function compare_table_row_onclick (){
-//     if(this.style.background-color == "" || this.style.background-color =="#f3f3f3") {
-//         $(this).css('background', '#00987');
-//     }
-//     else {
-//         $(this).css('background', "");
-//     }
-
-// };
 
 function create_compare_table(node_id, instructions, table_caption){
     var compare_tables_div = document.getElementById("compare_tabels_container");
@@ -89,8 +97,8 @@ function create_compare_table(node_id, instructions, table_caption){
 
 
 function display_found_matches(data){
-    document.getElementById("json_path_input").disabled = true
 
+    document.getElementById('networkNameInput').disabled = true;
 
     document.matches = data;
 
@@ -122,18 +130,16 @@ function display_found_matches(data){
 
 
 function success_handler(data){
-    var modal = document.getElementById("modal")
-    var modal_btn = document.getElementById("modal_btn")
-    var modal_message = document.getElementById("modal_message")
 
+    var network = JSON.parse(data)
 
-    modal_btn.onclick = function(){
-        modal.style.display = "none"
+    var success = local_data.update_existing_network(network)
+
+    if (success){
+        modals.show_modal("Offshore leaks nodes added to network", modals.close_modal)
+    }else{
+        modals.show_modal('FAILED TO SAVE NETWORK', modals.close_modal)
     }
-
-    modal_message.innerText = "Offshore leaks nodes added to network"
-
-    modal.style.display = "block"
 
     reset_page()
 
@@ -141,10 +147,11 @@ function success_handler(data){
 
 function reset_page(){
 
-    document.getElementById("json_path_input").value = ""
-    document.getElementById("json_path_input").disabled = false
+    document.getElementById("networkNameInput").value = ""
+    document.getElementById("networkNameInput").disabled = false
 
     document.matches = []
+    document.network = null
 
     document.getElementById("compare_tabels_container").innerHTML = "";    
 
@@ -169,11 +176,11 @@ function add_selected_matched_btn_onclick(){
         }
     }
 
-    var request_body = {"json_path" : document.getElementById("json_path_input").value,
+    var request_body = {"network" : document.network,
                         "matches": selected_matches
 }
 
-    f.send_mithril_request(request_body=request_body, function_name="add_offshore_leak_connections_to_network",success_function=success_handler)
+    f.send_mithril_request(request_body=request_body, function_name="add_offshore_leak_connections_to_network",success_function=success_handler, error_function=modals.error_modal)
 
 
 

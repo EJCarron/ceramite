@@ -16,4 +16,8 @@ function show_modal(message, onclick_function){
     modal.style.display = "block"
 }
 
-module.exports = {show_modal, close_modal}
+function error_modal(){
+    show_modal('FAIL', close_modal)
+}
+
+module.exports = {show_modal, close_modal, error_modal}

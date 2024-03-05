@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../styles/modal.css">
     <link rel="stylesheet" href="../styles/compare_table.css">
     <link rel="stylesheet" href="../styles/tooltip.css">
+    <link rel="stylesheet" href="../styles/autocomplete_input.css">
 </head>
 <body>
     <div id="modal" class="modal">
@@ -21,7 +22,9 @@
         <button><-- BACK</button>
     </a>
     <h1>Find connections in the Offshore leaks Database</h1>
-    <input id="json_path_input" placeholder="network json path"></input>
+    <div class="autocomplete" style="width:300px;">
+        <input id="networkNameInput" type="text" name="networkName" placeholder="Network Name">
+      </div>
     <hr>
     <div id="compare_tabels_container"></div>
     <hr>

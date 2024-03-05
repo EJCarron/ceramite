@@ -1,5 +1,6 @@
 const mithril_request = require("../scripts/mithril_request")
 const local_data = require("../scripts/local_data")
+const modals = require("../scripts/modals")
 
 function success_handler(data){
 
@@ -8,30 +9,11 @@ function success_handler(data){
     var success = local_data.add_new_network(network)
 
     if (success){
-        show_modal("SUCCESS", close_modal)
+        modals.show_modal("SUCCESS", modals.close_modal)
     }else{
-        show_modal('FAILED TO SAVE NETWORK', close_modal)
+        modals.show_modal('FAILED TO SAVE NETWORK', modals.close_modal)
     }
 }
-
-function close_modal(){
-    var modal = document.getElementById("modal")
-    modal.style.display = "none"
-}
-
-function show_modal(message, onclick_function){
-    var modal = document.getElementById("modal")
-    var modal_btn = document.getElementById("modal_btn")
-    var modal_message = document.getElementById("modal_message")
-
-
-    modal_btn.onclick = onclick_function
-
-    modal_message.innerText = message
-
-    modal.style.display = "block"
-}
-
 
 function create_network_submit_btn_onclick(){
 
@@ -39,7 +21,7 @@ function create_network_submit_btn_onclick(){
 
 
     if (local_data.is_name_in_library(network_name)){
-        show_modal("Name already in use", close_modal)
+        modals.show_modal("Name already in use", modals.close_modal)
         return null;
     }
 

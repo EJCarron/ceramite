@@ -27,13 +27,15 @@ function update_existing_network(network){
     var json_path = render_network_path(network['name'])
 
     fs.writeFileSync(json_path, JSON.stringify(network))
+
+    return true;
 }
 
 function network_is_in_library(network){
     var network_library = get_network_library();
     
     for (const [uuid, network_name] of Object.entries(network_library)) {
-        if (uuid == network['uuid'] && network_name == network['name']){
+        if (uuid == network['network_uuid'] && network_name == network['name']){
             return true;
         }
     }
@@ -45,10 +47,10 @@ function network_is_duplicate(network){
     var network_library = get_network_library();
     
     for (const [uuid, network_name] of Object.entries(network_library)) {
-        if (uuid == network['uuid'] && network_name == network['name']){
+        if (uuid == network['network_uuid'] && network_name == network['name']){
             console.log('network already exists');
             return true;
-        }else if(uuid == network['uuid']){
+        }else if(uuid == network['network_uuid']){
             console.log('network with same uuid but different name already in library');
             return true;
         }else if (network_name == network['name']){
@@ -94,7 +96,7 @@ function add_network_to_library(network){
 
     var network_library = get_network_library()
 
-    network_library[network['uuid']] = network['name']
+    network_library[network['network_uuid']] = network['name']
 
     fs.writeFileSync(network_library_path, JSON.stringify(network_library))
 
