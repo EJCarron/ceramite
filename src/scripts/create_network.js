@@ -1,9 +1,48 @@
 const mithril_request = require("../scripts/mithril_request")
+const local_data = require("../scripts/local_data")
+
+function success_handler(data){
+
+    var network = JSON.parse(data)
+
+    var success = local_data.add_new_network(network)
+
+    if (success){
+        show_modal("SUCCESS", close_modal)
+    }else{
+        show_modal('FAILED TO SAVE NETWORK', close_modal)
+    }
+}
+
+function close_modal(){
+    var modal = document.getElementById("modal")
+    modal.style.display = "none"
+}
+
+function show_modal(message, onclick_function){
+    var modal = document.getElementById("modal")
+    var modal_btn = document.getElementById("modal_btn")
+    var modal_message = document.getElementById("modal_message")
+
+
+    modal_btn.onclick = onclick_function
+
+    modal_message.innerText = message
+
+    modal.style.display = "block"
+}
 
 
 function create_network_submit_btn_onclick(){
 
     const network_name = document.getElementById("name_input").value
+
+
+    if (local_data.is_name_in_library(network_name)){
+        show_modal("Name already in use", close_modal)
+        return null;
+    }
+
 
     const choid_inputs = document.getElementsByClassName("choid_input")
     const chcn_inputs = document.getElementsByClassName("chcn_input")
@@ -11,8 +50,7 @@ function create_network_submit_btn_onclick(){
     const same_as_inputs = document.getElementsByClassName("same_as_input")
 
     const expands = countNum
-
-    const save_json_path = document.getElementById("save_json_input").value
+    
     const save_csvs_path = document.getElementById("save_csvs_input").value
     const save_xlsx_path = document.getElementById("save_xlsx_input").value
 
@@ -23,7 +61,6 @@ function create_network_submit_btn_onclick(){
 
     if (network_name != "") {request_body['network_name'] = network_name}
     if (expands > 0){ request_body['expand'] = expands}
-    if (save_json_path != "") {request_body['save_json_path'] = save_json_path}
     if (save_csvs_path != "") {request_body['save_csvs_path'] = csvs_path}
     if (save_xlsx_path != "") {request_body['save_xlsx_path'] = xlsx_json_path}
     if (save_neo4j) {request_body['save_neo4j'] = save_neo4j}
@@ -78,5 +115,5 @@ function create_network_submit_btn_onclick(){
 
     
 
-    mithril_request.send_mithril_request(request_body,"createnetwork", mithril_request.handle_success)
+    mithril_request.send_mithril_request(request_body,"createnetwork", success_handler)
 }
