@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registered Interests Connections</title>
+    <link rel="stylesheet" href="../styles/modal.css">
+    <link rel="stylesheet" href="../styles/compare_table.css">
+    <link rel="stylesheet" href="../styles/tooltip.css">
+    <link rel="stylesheet" href="../styles/autocomplete_input.css">
+</head>
+<body>
+    <div id="modal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <p id="modal_message"></p>
+          <button id="modal_btn">OKAY</button>
+        </div>
+      </div>
+    <a href="../../public/index.html">
+        <button><-- BACK</button>
+    </a>
+    <h1>Find connections in the UK Electoral Commissions List of Registered Interests</h1>
+    <div class="autocomplete" style="width:300px;">
+        <input id="networkNameInput" type="text" name="networkName" placeholder="Network Name">
+      </div>
+    <hr>
+    <div id="compare_tabels_container"></div>
+    <hr>
+    <button onclick="search_btn_onclick()">SEARCH</button>
+    <button onclick="add_selected_matched_btn_onclick()">ADD SELECTED MATCHES</button>
+    <button onclick="reset_page()">RESET</button>
+    <script src="../scripts/registered_interests_connections.js"></script>
+</body>
+</html>
