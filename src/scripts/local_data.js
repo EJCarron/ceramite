@@ -43,6 +43,7 @@ function network_is_in_library(network){
     return false;
 }
 
+
 function network_is_duplicate(network){
     var network_library = get_network_library();
     
@@ -63,6 +64,12 @@ function network_is_duplicate(network){
 }
 
 function get_network(network_name){
+
+    if (!name_in_library(network_name)){
+        console.log('network not in library')
+        return null;
+    }
+
     var json_path = render_network_path(network_name)
 
     var network = JSON.parse(fs.readFileSync(json_path));
@@ -105,15 +112,14 @@ function add_network_to_library(network){
 
 }
 
-function is_name_in_library(network_name){
+function name_in_library(network_name){
     var network_library = get_network_library()
 
-    for (const [uuid, name] of Object.entries(network_library)) {
-        if (network_name == name){
-            return true;
-        }
+    if (Object.values(network_library).includes(network_name)){
+        return true;
+    }else{
+        return false;
     }
-    return false;
 }
 
 function get_network_name_list(){
@@ -139,4 +145,4 @@ function render_network_path(network_name){
     return 'data/' + network_name + '.json'
 }
 
-module.exports = {update_existing_network, add_new_network, get_network, is_name_in_library, get_network_name_list, get_name_from_uuid}
+module.exports = {update_existing_network, add_new_network, get_network, name_in_library, get_network_name_list, get_name_from_uuid}

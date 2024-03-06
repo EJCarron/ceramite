@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Offshore Leaks Connections</title>
+    <title>Expand Network</title>
     <link rel="stylesheet" href="../styles/modal.css">
-    <link rel="stylesheet" href="../styles/compare_table.css">
-    <link rel="stylesheet" href="../styles/tooltip.css">
+    <link rel="stylesheet" href="../styles/switch.css">
     <link rel="stylesheet" href="../styles/autocomplete_input.css">
+    <link rel="stylesheet" href="../styles/compare_table.css">
 </head>
 <body>
     <div id="modal" class="modal">
@@ -21,16 +21,16 @@
     <a href="../../public/index.html">
         <button><-- BACK</button>
     </a>
-    <h1>Find connections in the Offshore leaks Database</h1>
+    <h1>Expand Network</h1>
     <div class="autocomplete" style="width:300px;">
         <input id="networkNameInput" type="text" name="networkName" placeholder="Network Name">
       </div>
+      <button id="select_network_btn" onclick="select_network_btn_onclick()">select</button>
     <hr>
-    <div id="compare_tabels_container"></div>
+    <div id="network_div"></div>
     <hr>
-    <button onclick="search_ol_db_btn_onclick()">SEARCH</button>
-    <button onclick="add_selected_matched_btn_onclick()">ADD SELECTED MATCHES</button>
-    <button onclick="reset_page()">RESET</button>
-    <script src="../scripts/offshore_leaks_connections.js"></script>
+    <button onclick="expand_selection_btn_onclick()">Expand Selection</button>
+    <button onclick="expand_all_btn_onclick()">Expand All Nodes</button>
+    <script src="../scripts/expand_network.js"></script>
 </body>
 </html>
