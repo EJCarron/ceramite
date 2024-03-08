@@ -21,7 +21,7 @@ function search_btn_onclick(){
     document.network = network
 
     f.send_mithril_request(request_body={"network": network}, 
-    function_name="find_registered_interests_connections", 
+    function_name="find_electoral_commission_donation_connections", 
     success_functiopn=display_found_matches, 
     error_function=modals.error_modal);
     
@@ -141,7 +141,7 @@ function success_handler(data){
     var success = local_data.update_existing_network(network)
 
     if (success){
-        modals.show_modal("Registered Interest Donations added to network", modals.close_modal)
+        modals.show_modal("Electoral Commission Donations added to network", modals.close_modal)
     }else{
         modals.show_modal('FAILED TO SAVE NETWORK', modals.close_modal)
     }
@@ -192,7 +192,7 @@ function add_selected_matched_btn_onclick(){
                         "matches": selected_matches}
 
 
-    f.send_mithril_request(request_body=request_body, function_name="add_registered_interests_connections_to_network",success_function=success_handler, error_function=modals.error_modal)
+    f.send_mithril_request(request_body=request_body, function_name="add_electoral_commission_donation_connections_to_network",success_function=success_handler, error_function=modals.error_modal)
 
 
 

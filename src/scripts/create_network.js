@@ -20,7 +20,7 @@ function create_network_submit_btn_onclick(){
     const network_name = document.getElementById("name_input").value
 
 
-    if (local_data.is_name_in_library(network_name)){
+    if (local_data.name_in_library(network_name)){
         modals.show_modal("Name already in use", modals.close_modal)
         return null;
     }
