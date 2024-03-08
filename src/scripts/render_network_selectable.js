@@ -1,5 +1,5 @@
 
-function create_table(node_type, nodes, tables_div){
+function create_table(node_type, nodes, tables_div, disable_expanded){
     var new_table = document.createElement("table");
 
 
@@ -18,18 +18,23 @@ function create_table(node_type, nodes, tables_div){
         const tr = new_table.insertRow();
         tr.setAttribute('selected', false)
         tr.setAttribute('node_id', nodes[i]["node_id"])
-        
         tr.classList.add("node_table_row")
+        if(nodes[i]['expanded'] == true && disable_expanded){
+            tr.classList.toggle("disabled-row")
+            
+        }else{
+            tr.onclick = function(){
+                tr.classList.toggle("active-row")
 
-        tr.onclick = function(){
-            tr.classList.toggle("active-row")
-
-            if (tr.getAttribute('selected') == "true"){
-                tr.setAttribute('selected', false)
-            }else{
-                tr.setAttribute('selected', true)
+                if (tr.getAttribute('selected') == "true"){
+                    tr.setAttribute('selected', false)
+                }else{
+                    tr.setAttribute('selected', true)
+                }
             }
+
         }
+
         const td_node_name = tr.insertCell();
         td_node_name.innerText = nodes[i]['name'] 
 
@@ -42,7 +47,7 @@ function create_table(node_type, nodes, tables_div){
 }
 
 
-function render_network_selectable(network, render_div){
+function render_network_selectable(network, render_div, disable_expanded){
     render_div.innerHTML = ''
 
     var nodes_split_by_type = {}
@@ -58,7 +63,7 @@ function render_network_selectable(network, render_div){
 
 
     for (const [node_type, nodes] of Object.entries(nodes_split_by_type)) {
-        create_table(node_type, nodes, render_div)
+        create_table(node_type, nodes, render_div, disable_expanded)
     }
 
 }

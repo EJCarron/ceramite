@@ -18,7 +18,7 @@ function select_network_btn_onclick(){
         if (network == null){
             modals.show_modal("No such network in library", modals.close_modal)
         }else{
-            render_network.render_network_selectable(network, document.getElementById('network_div'))
+            render_network.render_network_selectable(network, document.getElementById('network_div'), disable_expanded=true)
         }
     }
 }

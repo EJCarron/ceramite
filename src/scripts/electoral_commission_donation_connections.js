@@ -46,17 +46,15 @@ function create_compare_table(node_id, instructions, table_caption){
     const matched_to_cell = header_row.insertCell();
     matched_to_cell.innerText = "Your network node search term"
     const potential_match_cell = header_row.insertCell();
-    potential_match_cell.innerText = "Potential Donor Match"
-    const num_donations_cell = header_row.insertCell();
-    num_donations_cell.innerText = "Number of Donations" 
+    potential_match_cell.innerText = "Potential Match"
+    
 
-
-    for (let i = 0; i < instructions["potentially_matched_groups"].length; i++){
-        var potentially_matched_group = instructions["potentially_matched_groups"][i]
+    for (let i = 0; i < instructions["hits"].length; i++){
+        var hit = instructions["hits"][i]
 
         const tr = new_table.insertRow();
         tr.setAttribute('selected', false)
-        tr.setAttribute('group_key', potentially_matched_group["group_key"])
+        tr.setAttribute('match_id', hit["id"])
         
         tr.classList.add("compare_table_row")
 
@@ -76,14 +74,10 @@ function create_compare_table(node_id, instructions, table_caption){
 
         const cell_div = document.createElement('div')
         cell_div.classList.add('tooltip')
-        cell_div.innerText = potentially_matched_group["group_key"];
+        cell_div.innerText = hit["name"];
         const tool_tip = document.createElement('span')
         tool_tip.classList.add('tooltiptext')
-        tool_tip.innerText = JSON.stringify(potentially_matched_group)
-        
-        const td_num_hits = tr.insertCell();
-        td_num_hits.innerText = potentially_matched_group['hits'].length 
-
+        tool_tip.innerText = JSON.stringify(hit)
 
         cell_div.appendChild(tool_tip)
 
@@ -111,7 +105,7 @@ function display_found_matches(data){
     for (let i = 0; i < data.length; i++){
         var db_match = data[i]
 
-        var table_name = db_match["info"]["compare_node_id"] +"_"+ db_match["info"]["searched_by"] + "_"+ db_match["info"]["collection"]
+        var table_name = db_match["info"]["compare_node_name"] +"_"+ db_match["info"]["searched_by"] + "_"+ db_match["info"]["collection"]
 
         if (!Object.keys(create_tables_instructions).includes(table_name)){
             create_tables_instructions[table_name] = {
@@ -119,10 +113,10 @@ function display_found_matches(data){
                 "compare_node_name": db_match["info"]["compare_node_name"],
                 "matched_to": db_match["info"]["matched_to"],
                 "match_attribute": db_match["info"]['searched_by'],
-                "potentially_matched_groups" : []
+                "hits" : []
             };
         };
-        create_tables_instructions[table_name]["potentially_matched_groups"].push(db_match["values"]);
+        create_tables_instructions[table_name]['hits'].push(db_match["values"]);
     }
 
 
@@ -166,31 +160,23 @@ function reset_page(){
 function add_selected_matched_btn_onclick(){
     const rows = document.getElementsByClassName("compare_table_row")
 
-    var selected_group_keys = []
+    var selected_match_ids = []
     for (let i = 0 ; i < rows.length; i++){
         if(rows[i].getAttribute("selected") == 'true'){
-            selected_group_keys.push(rows[i].getAttribute('group_key'))
+            selected_match_ids.push(rows[i].getAttribute('match_id'))
         }
     }
 
     var matches = document.matches
     var selected_matches = []
     for (let j = 0; j < matches.length; j++){
-        if ( selected_group_keys.includes(matches[j]["values"]['group_key'])){
-            var hits = matches[j]['values']['hits']
-            for (let y = 0; y < hits.length; y++){
-
-                var match = {'info': matches[j]['info'],
-                'values': hits[y]['document']}
-                selected_matches.push(match)
-            }
+        if ( selected_match_ids.includes(matches[j]["values"]['id'])){
+            selected_matches.push(matches[j])
         }
     }
-    
 
     var request_body = {"network" : document.network,
                         "matches": selected_matches}
-
 
     f.send_mithril_request(request_body=request_body, function_name="add_electoral_commission_donation_connections_to_network",success_function=success_handler, error_function=modals.error_modal)
 
