@@ -1,8 +1,17 @@
 const mithril_request = require("../scripts/mithril_request")
 const local_data = require("../scripts/local_data")
 const modals = require("../scripts/modals")
+const lock = require("../scripts/lock_screen")
+
+lock.lock_screen_functionality()
+
+function fail_handler(){
+    lock.unlock_screen(modals.close_modal)
+    modals.error_modal()
+}
 
 function success_handler(data){
+    lock.unlock_screen(modals.close_modal)
 
     var network = JSON.parse(data)
 
@@ -16,6 +25,7 @@ function success_handler(data){
 }
 
 function create_network_submit_btn_onclick(){
+    lock.lock_screen(modals.screen_locked_modal)
 
     const network_name = document.getElementById("name_input").value
 
@@ -97,5 +107,5 @@ function create_network_submit_btn_onclick(){
 
     
 
-    mithril_request.send_mithril_request(request_body,"createnetwork", success_handler)
+    mithril_request.send_mithril_request(request_body,"createnetwork", success_handler, fail_handler)
 }

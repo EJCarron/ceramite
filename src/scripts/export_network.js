@@ -2,12 +2,22 @@ const mithril_request = require("../scripts/mithril_request")
 const autocomplete = require("../scripts/autocomplete")
 const local_data = require("../scripts/local_data")
 const modals = require("../scripts/modals")
+const lock = require("../scripts/lock_screen")
+
+lock.lock_screen_functionality()
 
 const network_names = local_data.get_network_name_list()
 
 autocomplete.autocomplete(document.getElementById("networkNameInput"), network_names)
 
+
+function fail_handler(){
+    lock.unlock_screen(modals.close_modal)
+    modals.error_modal()
+}
+
 function success_handler(data){
+    lock.unlock_screen(modals.close_modal)
 
     modals.show_modal('export complete', function(){
         modal.style.display = "none"
@@ -16,6 +26,8 @@ function success_handler(data){
 }
 
 function export_network_submit_btn_onclick(){
+
+    lock.lock_screen(modals.screen_locked_modal)
 
     const network_name = document.getElementById('networkNameInput').value
 
@@ -40,7 +52,12 @@ function export_network_submit_btn_onclick(){
     if (save_neo4j) {request_body['save_neo4j'] = save_neo4j}
     if (overwrite_neo4j) {request_body['overwrite_neo4j'] = overwrite_neo4j}
 
-    mithril_request.send_mithril_request(request_body=request_body, function_name="export_network", success_function=success_handler)
+    mithril_request.send_mithril_request(
+        request_body=request_body,
+         function_name="export_network",
+         success_function=success_handler,
+         error_function=fail_handler
+         )
 
 }
 

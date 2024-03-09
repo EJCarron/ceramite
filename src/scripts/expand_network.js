@@ -3,10 +3,19 @@ const autocomplete = require("../scripts/autocomplete")
 const local_data = require("../scripts/local_data")
 const modals = require("../scripts/modals")
 const render_network = require("../scripts/render_network_selectable")
+const lock = require("../scripts/lock_screen")
+
+lock.lock_screen_functionality()
 
 const network_names = local_data.get_network_name_list()
 
 autocomplete.autocomplete(document.getElementById("networkNameInput"), network_names)
+
+
+function fail_handler(){
+    lock.unlock_screen(modals.close_modal)
+    modals.error_modal()
+}
 
 function select_network_btn_onclick(){
 
@@ -29,6 +38,7 @@ function reset_page (){
 }
 
 function success_handler(data){
+    lock.unlock_screen(modals.close_modal)
     reset_page()
 
     var network = JSON.parse(data)
@@ -43,6 +53,7 @@ function success_handler(data){
 }
 
 function expand_selection_btn_onclick(){
+    lock.lock_screen(modals.screen_locked_modal)
 
     const rows = document.getElementsByClassName("node_table_row")
 
@@ -53,14 +64,17 @@ function expand_selection_btn_onclick(){
         }
     }
 
-    mithril_request.send_mithril_request(request_body = {'network': document.network, 'node_ids': selected_node_ids}, function_name = 'expand',
-    success_function = success_handler, error_function = modals.error_modal
+    mithril_request.send_mithril_request(request_body = 
+        {'network': document.network, 'node_ids': selected_node_ids}, function_name = 'expand',
+    success_function = success_handler, error_function = fail_handler
     )
 }
 
 function expand_all_btn_onclick(){
 
+    lock.lock_screen(modals.screen_locked_modal)
+
     mithril_request.send_mithril_request(request_body = {'network': document.network}, function_name = 'expand',
-    success_function = success_handler, error_function = modals.error_modal)
+    success_function = success_handler, error_function = fail_handler)
 
 }
