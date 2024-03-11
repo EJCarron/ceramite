@@ -3,6 +3,7 @@ const local_data = require("../scripts/local_data")
 const modals = require("../scripts/modals")
 const autocomplete = require("../scripts/autocomplete")
 const lock = require("../scripts/lock_screen")
+const compare_table = require("../scripts/compare_table")
 
 lock.lock_screen_functionality()
 
@@ -40,75 +41,6 @@ function search_ol_db_btn_onclick(){
     
 };
 
-function create_compare_table(node_id, instructions, table_caption){
-    var compare_tables_div = document.getElementById("compare_tabels_container");
-        
-    var new_table = document.createElement("table");
-
-
-    new_table.setAttribute("class", "compare-table")
-
-    let caption = new_table.createCaption();
-    caption.textContent = table_caption;
-
-
-    new_table.id = (node_id + "_table");
-    new_table.class = "compare_table";
-
-    const header_row = new_table.insertRow();
-    const matched_to_cell = header_row.insertCell();
-    matched_to_cell.innerText = "Search Term"
-    const potential_match_cell = header_row.insertCell();
-    potential_match_cell.innerText = "Potential Match" 
-
-
-    for (let i = 0; i < instructions["potentially_matched_nodes"].length; i++){
-        var potentially_matched_node = instructions["potentially_matched_nodes"][i]
-
-        const tr = new_table.insertRow();
-        tr.setAttribute('selected', false)
-        tr.setAttribute('match_id', potentially_matched_node["id"])
-        
-        tr.classList.add("compare_table_row")
-
-        tr.onclick = function(){
-            tr.classList.toggle("active-row")
-
-            if (tr.getAttribute('selected') == "true"){
-                tr.setAttribute('selected', false)
-            }else{
-                tr.setAttribute('selected', true)
-            }
-        }
-        const td_match_attr = tr.insertCell();
-        td_match_attr.innerText = instructions['matched_to'] 
-
-        const td_potential = tr.insertCell();
-
-        const cell_div = document.createElement('div')
-        cell_div.classList.add('tooltip')
-        cell_div.innerText = potentially_matched_node[instructions["match_attribute"]];
-        const tool_tip = document.createElement('span')
-        tool_tip.classList.add('tooltiptext')
-        tool_tip.innerText = JSON.stringify(potentially_matched_node)
-        
-
-        cell_div.appendChild(tool_tip)
-
-
-        td_potential.appendChild(cell_div)
-
-    };
-
-
-    compare_tables_div.appendChild(new_table)
-
-
-};
-
-
-
-
 function display_found_matches(data){
     lock.unlock_screen(modals.close_modal)
 
@@ -116,29 +48,7 @@ function display_found_matches(data){
 
     document.matches = data;
 
-    var create_tables_instructions = {};
-    for (let i = 0; i < data.length; i++){
-        var db_match = data[i]
-
-        var table_name = db_match["info"]["compare_node_id"] +"_"+ db_match["info"]["searched_by"] + "_"+ db_match["info"]["collection"]
-
-        if (!Object.keys(create_tables_instructions).includes(table_name)){
-            create_tables_instructions[table_name] = {
-                "compare_node_id": db_match["info"]["compare_node_id"],
-                "compare_node_name": db_match["info"]["compare_node_name"],
-                "matched_to": db_match["info"]["matched_to"],
-                "match_attribute": db_match["info"]['searched_by'],
-                "potentially_matched_nodes" : []
-            };
-        };
-        create_tables_instructions[table_name]["potentially_matched_nodes"].push(db_match["values"]);
-    }
-
-
-    for (const [key, value] of Object.entries(create_tables_instructions)){
-        create_compare_table(node_id=key, instructions=value, table_caption=key.replaceAll("_", " "));
-    };
-    
+    compare_table.render_ranked_match_table(data)
 
 }
 

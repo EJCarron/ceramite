@@ -12,7 +12,6 @@ function send_mithril_request(request_body, function_name, success_function, err
 
 }
 
-
 module.exports = {
     send_mithril_request
 };

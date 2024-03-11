@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Companies House Search</title>
+    <link rel="stylesheet" href="../styles/modal.css">
+    <link rel="stylesheet" href="../styles/card.css">
+    <link rel="stylesheet" href="../styles/scroll.css">
+</head>
+<body>
+    <div id="modal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+          <p id="modal_message"></p>
+          <button id="modal_btn">OKAY</button>
+        </div>
+      
+      </div>
+    <a href="../../public/index.html">
+        <button><-- BACK</button>
+    </a>
+    <button onclick="reset_page()">reset</button>
+    <h1>Companies House Search</h1>
+    <h2 id="search_type_banner" style="visibility: hidden;"></h2>
+    <input id="search_input" placeholder="search"></input>
+    <button onclick="search_btn_onclick('all',1)">Search All</button>
+    <button onclick="search_btn_onclick('company',1)">Search Companies</button>
+    <button onclick="search_btn_onclick('officer',1)">Search Officers</button>
+    <hr>
+    <div id="results_container_div" class="scroll"></div>
+    <hr>
+    <p id="page_counter" style="visibility: hidden;"></p>
+    <hr>
+    <button onclick="previous_page_btn_onclick()">Previous page</button>
+    <button onclick="next_page_btn_onclick()">Next page</button>
+    <script src="../scripts/companies_house_search.js"></script>
+</body>
+</html>
