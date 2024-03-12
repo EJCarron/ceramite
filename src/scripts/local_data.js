@@ -15,8 +15,22 @@ function add_new_network(network){
 
     fs.writeFileSync(json_path, JSON.stringify(network))
 
+    extract_nodes_from_network_and_add_to_dictionary(network)
+
     return true;
 }
+
+function extract_nodes_from_network_and_add_to_dictionary(network){
+    var dictionary = get_node_dictionary()
+
+    for (const node of Object.values(network['nodes'])){
+        add_to_node_dictionary(node['name'], node['node_id'], node['node_type'])
+    }
+
+
+}
+
+
 
 function update_existing_network(network){
 
@@ -28,6 +42,8 @@ function update_existing_network(network){
     var json_path = render_network_path(network['name'])
 
     fs.writeFileSync(json_path, JSON.stringify(network))
+
+    extract_nodes_from_network_and_add_to_dictionary(network)
 
     return true;
 }
@@ -101,7 +117,7 @@ function save_node_dictionary(node_dictionary){
 
 
 
-function add_to_node_dictionary(node_definition, node_id, node_type){
+function add_to_node_dictionary(node_name, node_id, node_type){
 
     var node_dictionary = get_node_dictionary()
 
@@ -114,34 +130,14 @@ function add_to_node_dictionary(node_definition, node_id, node_type){
         console.log('node already in dictionary')
         return false;
     }else {
-        node_dictionary[node_type][node_id] = node_definition;
+        node_dictionary[node_type][node_id] = node_name;
     }
 
     save_node_dictionary(node_dictionary)
     return true;
 }
 
-function update_node_definition(new_definition, node_id, node_type){
-    var node_dictionary = get_node_dictionary()
-
-    if (!Object.keys(node_dictionary).includes(node_type)){
-        console.log('node type not in dictionary')
-        return false;
-    }
-
-    if (Object.keys(node_dictionary[node_type]).includes(node_id)){
-        node_dictionary[node_type][node_id] = new_definition;
-    }else {
-        console.log('node not in dictionary')
-        return false;
-    }
-
-    save_node_dictionary(node_dictionary)
-    return true;
-
-}
-
-function get_node_definition(node_type, node_id){
+function get_node_name(node_type, node_id){
     var node_dictionary = get_node_dictionary()
 
     if (!Object.keys(node_dictionary).includes(node_type)){
@@ -157,7 +153,7 @@ function get_node_definition(node_type, node_id){
     }
 }
 
-function get_node_defintions_of_type(node_type){
+function get_node_names_of_type(node_type){
     var node_dictionary = get_node_dictionary()
 
     if (Object.keys(node_dictionary).includes(node_type)){
@@ -238,4 +234,4 @@ function render_network_path(network_name){
 }
 
 module.exports = {update_existing_network, add_new_network, get_network, name_in_library, 
-    get_network_name_list, get_name_from_uuid, get_node_dictionary, get_node_definition, get_node_defintions_of_type, add_to_node_dictionary, update_node_definition}
+    get_network_name_list, get_name_from_uuid, get_node_dictionary, get_node_name, get_node_names_of_type, add_to_node_dictionary}

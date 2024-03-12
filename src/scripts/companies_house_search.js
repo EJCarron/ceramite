@@ -83,12 +83,20 @@ function create_result_div(result, node_in_dictionary){
     address.innerText = result['address_snippet']
     container_div.appendChild(address)
 
-    var add_to_dictionary_btn = document.createElement('button')
-    add_to_dictionary_btn.innerText = node_in_dictionary ? 'update' : 'add';
-    add_to_dictionary_btn.addEventListener('click', function(){
-        add_result_to_dictionary(result, node_in_dictionary, container_div, add_to_dictionary_btn)
-     });
-    container_div.appendChild(add_to_dictionary_btn)
+    
+
+    if (node_in_dictionary){
+        container_div.classList.toggle("clicked")
+    }else{
+
+        var add_to_dictionary_btn = document.createElement('button')
+        add_to_dictionary_btn.innerText =  'add';
+        add_to_dictionary_btn.addEventListener('click', function(){
+            add_result_to_dictionary(result, container_div, add_to_dictionary_btn)
+        });
+        container_div.appendChild(add_to_dictionary_btn)
+    }
+    
 
     result_div.appendChild(container_div)
 
@@ -97,13 +105,10 @@ function create_result_div(result, node_in_dictionary){
 
 }
 
-function add_result_to_dictionary(result, node_in_dictionary, div, button){
-    if (node_in_dictionary){
-        local_data.update_node_definition(new_definition=result, node_id=result['node_id'], node_type=result['kind'])
-    }else{
-        local_data.add_to_node_dictionary(node_definition=result, node_id=result['node_id'], node_type=result['kind'])
-    }
-
+function add_result_to_dictionary(result, div, button){
+    
+    local_data.add_to_node_dictionary(node_name=result['name'], node_id=result['node_id'], node_type=result['kind'])
+    
     button.style.visibility = 'hidden'
 
     div.classList.toggle("clicked")

@@ -7,9 +7,9 @@
     <title>Create Network</title>
     <link rel="stylesheet" href="../styles/modal.css">
     <link rel="stylesheet" href="../styles/switch.css">
+    <link rel="stylesheet" href="../styles/autocomplete_input.css">
+    <link rel="stylesheet" href="../styles/card.css">
     
-    
-
 </head>
 <body>
     <div id="modal" class="modal">
@@ -25,19 +25,32 @@
         <button><-- BACK</button>
     </a>
     <h1>Create Network</h1>
-    <input id="name_input" placeholder="network name"></input>
-    <hr>
-    <button onclick="add_choid_input()">Add Companies House Officer ID</button>
-    <div id="choid_inputs"></div>
-    <hr>
-    <button onclick="add_chcn_input()">Add Companies House Company Number</button>
-    <div id="chcn_inputs"></div>
-    <hr>
-    <button onclick="add_olnid_input()">Add Offshore Leaks Node ID</button>
-    <div id="olnid_inputs"></div>
-    <hr>
-    <button onclick="add_same_as_input()">Add same as relationship</button>
-    <div id="same_as_inputs"></div>
+    <input placeholder="network name" id="name_input">
+    <button onclick="add_core_node_btn_onclick()">Add Core Node</button>
+    <div class="card" style="visibility: hidden;" id="add_core_node_div">
+        <div class="container">
+            <div id="type_radio_container" class="container">
+                <input type="radio" name="node_type" value="CompaniesHouseOfficer" onclick="node_type_change()" checked> Companies House Officer 
+                <input type="radio" name="node_type" value="CompaniesHouseCompany" onclick="node_type_change()" > Companies House Company
+                <input type="radio" name="node_type" value="OffshoreLeaksOfficer" onclick="node_type_change()" > Offshore Leaks Officer
+                <input type="radio" name="node_type" value="OffshoreLeaksEntity" onclick="node_type_change()" > Offshore Leaks Entity
+                <input type="radio" name="node_type" value="ElectoralCommissionRegulatedDonee" onclick="node_type_change()" > Electoral Commission Donee
+                <input type="radio" name="node_type" value="ElectoralCommissionDonor" onclick="node_type_change()" > Electoral Commission Donor
+            </div>
+            <div id="input_select_radio_container">
+                <input type="radio" name="input_select" value="by_id" onclick="node_input_manual()" checked> Manual By ID
+                <input type="radio" name="input_select" value="by_name" onclick="node_input_lookup()"> Local Saved Name Look Up
+            </div>
+            <div id="input_div" class="autocomplete">
+                <input type="text" id="node_input">
+            </div>
+            <div id="btn_container" class="container">
+                <button onclick="confirm_add_btn_onclick()">confirm</button>
+                <button onclick="cancel_add_btn_onclick()">cancel</button>
+            </div>
+        </div>
+    </div>
+    <div id="core_nodes_div"></div>
     <hr>
     <p>Expand Network</p>
     <div class="frame">
