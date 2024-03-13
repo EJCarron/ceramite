@@ -44,6 +44,8 @@ function export_network_submit_btn_onclick(){
     const save_neo4j = document.getElementById("save_neo4j_switch").checked
     const overwrite_neo4j = document.getElementById("overwrite_neo4j_switch").checked
 
+    const export_timeline_path = document.getElementById("export_timeline_input").value
+
     var request_body = {'network': network}
 
     
@@ -51,6 +53,7 @@ function export_network_submit_btn_onclick(){
     if (save_xlsx_path != "") {request_body['save_xlsx_path'] = save_xlsx_path}
     if (save_neo4j) {request_body['save_neo4j'] = save_neo4j}
     if (overwrite_neo4j) {request_body['overwrite_neo4j'] = overwrite_neo4j}
+    if (export_timeline_path != "") {request_body['export_timeline_path'] = export_timeline_path}
 
     mithril_request.send_mithril_request(
         request_body=request_body,
