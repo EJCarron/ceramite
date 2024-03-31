@@ -6,9 +6,26 @@ const autocomplete = require("../scripts/autocomplete")
 
 lock.lock_screen_functionality()
 
+const node_dict = local_data.get_node_dictionary()
+
 document.node_ids = {}
 
 let freezeClic = false;
+
+var node_type_selecter = document.getElementById("node_type_selecter")
+
+const node_types = local_data.node_types_list()
+
+function append_option(val){
+    var option = document.createElement("option")
+    option.value = val
+    option.innerText = val
+    node_type_selecter.appendChild(option)
+}
+
+for (const node_type of node_types){
+    append_option(node_type)
+}
 
 function fail_handler(){
     lock.unlock_screen(modals.close_modal)
@@ -32,73 +49,38 @@ function success_handler(data){
     }
 }
 
-function node_input_manual(){
-    clear_node_input()
-    var node_input = document.getElementById('node_input')
-    autocomplete.autocomplete(node_input, [])
-}
-
-function get_radio_group_selected_value(radios){
-    for (let i = 0 ; i < radios.length; i++){
-        if (radios[i].checked == true){
-            return radios[i].value
-        }
-    }
-
-    return 'none selected'
-}
 
 function clear_node_input(){
     var node_input = document.getElementById('node_input')
     node_input.value = ''
 }
 
-function get_input_type(){
-    var radios = document.getElementsByName('input_select')
-
-    return get_radio_group_selected_value(radios)
-}
-
-function get_selected_node_type(){
-
-    var radios = document.getElementsByName('node_type')
-
-    return get_radio_group_selected_value(radios)
-
-}
 
 function node_type_change(){
     clear_node_input()
-    if (get_input_type() == 'by_name'){
-        node_input_lookup()
-    }
+    
+    var node_type = document.getElementById('node_type_selecter').value
+
+    var autofill_list = make_autofill_list(node_dict[node_type])
+
+    var node_input = document.getElementById('node_input')
+    
+    autocomplete.autocomplete(node_input, autofill_list)
 }
-function make_autofill_list(local_node_names_dict){
+
+function make_autofill_list(node_type_dict_section){
 
     var autofill_list = []
 
-    for (const [node_id, node_name] of Object.entries(local_node_names_dict)){
+    for (const [node_id, node_contents] of Object.entries(node_type_dict_section)){
         
-        autofill_list.push((node_name + ' - ' + node_id))
+        if(!node_has_already_been_added(node_contents['init_token'])){
+
+            autofill_list.push((node_contents['name'] + '  --  token:' + node_contents['init_token']))
+        }
     }
 
     return autofill_list
-}
-
-function node_input_lookup(){
-    clear_node_input()
-    var selected_node_type = get_selected_node_type()
-
-    
-    var local_node_names = local_data.get_node_names_of_type(selected_node_type)
-    var autofill_list = make_autofill_list(local_node_names)
-    
-    var node_input = document.getElementById('node_input')
-
-    
-    autocomplete.autocomplete(node_input, autofill_list)
-    
-
 }
 
 function add_core_node_btn_onclick(){
@@ -107,17 +89,17 @@ function add_core_node_btn_onclick(){
     add_node_div.style.visibility = 'visible'
 }
 
-function add_node_card(node_id, node_type){
+function add_node_card(init_token, node_type){
 
     var node_cards_div = document.getElementById('core_nodes_div')
 
     var node_card = document.createElement('div')
-    node_card.id = node_id + '_card'
+    node_card.id = init_token + '_card'
 
     node_card.classList.add('card')
     node_card.classList.add('node_card')
 
-    node_card.setAttribute('node_id', node_id)
+    node_card.setAttribute('node_id', init_token)
     node_card.setAttribute('node_type', node_type)
 
 
@@ -125,14 +107,14 @@ function add_node_card(node_id, node_type){
     node_card_container.classList.add('container')
 
     var id_text = document.createElement('p')
-    id_text.innerText = node_id
+    id_text.innerText = init_token
 
     node_card_container.appendChild(id_text)
 
     var delete_btn = document.createElement('button')
     delete_btn.innerText = 'x'
     delete_btn.onclick = function(){
-        document.getElementById(node_id + '_card').remove()
+        document.getElementById(init_token + '_card').remove()
     }
 
     node_card_container.appendChild(delete_btn)
@@ -184,26 +166,25 @@ function cancel_add_btn_onclick() {
 
 function confirm_add_btn_onclick(){
     var node_input_value = document.getElementById('node_input').value
+    var node_type = document.getElementById('node_type_selecter').value
 
     if (node_input_value == ''){
         return
     }
 
-    var node_type = get_selected_node_type()
+    
+    var init_token = node_input_value.split('  --  token:')[1]
+    
 
-    if (get_input_type() == 'by_name'){
-        var node_id = node_input_value.split(' - ')[1]
-    }else{
-        var node_id = node_input_value
-    }
-
-    if (node_has_already_been_added(node_id)){
+    if (node_has_already_been_added(init_token)){
         return;
     }
 
 
     clear_node_input()
-    add_node_card(node_id, node_type)
+    
+    add_node_card(init_token, node_type)
+    node_type_change()
     
 }
 

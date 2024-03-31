@@ -29,18 +29,9 @@
     <button onclick="add_core_node_btn_onclick()">Add Core Node</button>
     <div class="card" style="visibility: hidden;" id="add_core_node_div">
         <div class="container">
-            <div id="type_radio_container" class="container">
-                <input type="radio" name="node_type" value="CompaniesHouseOfficer" onclick="node_type_change()" checked> Companies House Officer 
-                <input type="radio" name="node_type" value="CompaniesHouseCompany" onclick="node_type_change()" > Companies House Company
-                <input type="radio" name="node_type" value="OffshoreLeaksOfficer" onclick="node_type_change()" > Offshore Leaks Officer
-                <input type="radio" name="node_type" value="OffshoreLeaksEntity" onclick="node_type_change()" > Offshore Leaks Entity
-                <input type="radio" name="node_type" value="ElectoralCommissionRegulatedDonee" onclick="node_type_change()" > Electoral Commission Donee
-                <input type="radio" name="node_type" value="ElectoralCommissionDonor" onclick="node_type_change()" > Electoral Commission Donor
-            </div>
-            <div id="input_select_radio_container">
-                <input type="radio" name="input_select" value="by_id" onclick="node_input_manual()" checked> Manual By ID
-                <input type="radio" name="input_select" value="by_name" onclick="node_input_lookup()"> Local Saved Name Look Up
-            </div>
+            <select id="node_type_selecter" onchange="node_type_change()">
+                <option disabled="disabled" selected="selected">Choose node type</option>
+            </select>
             <div id="input_div" class="autocomplete">
                 <input type="text" id="node_input">
             </div>
