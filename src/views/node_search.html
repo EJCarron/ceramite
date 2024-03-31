@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node Search</title>
+    <link rel="stylesheet" href="../styles/modal.css">
+    <link rel="stylesheet" href="../styles/card.css">
+    <link rel="stylesheet" href="../styles/scroll.css">
+    <link rel="stylesheet" href="../styles/tooltip.css">
+</head>
+<body>
+    <div id="modal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+          <p id="modal_message"></p>
+          <button id="modal_btn">OKAY</button>
+        </div>
+      
+      </div>
+    <a href="../../public/index.html">
+        <button><-- BACK</button>
+    </a>
+    <button onclick="reset_page()">reset</button>
+    <h1>Node Search</h1>
+    <h2 id="search_type_banner" style="visibility: hidden;"></h2>
+    <input id="search_input" placeholder="search"></input>
+    <button onclick="search_btn_onclick(1)">Search</button>
+    <select id="node_type_selecter"></select>
+    <hr>
+    <div id="results_container_div" class="scroll"></div>
+    <hr>
+    <p id="page_counter" style="visibility: hidden;"></p>
+    <hr>
+    <button onclick="previous_page_btn_onclick()">Previous page</button>
+    <button onclick="next_page_btn_onclick()">Next page</button>
+    <script src="../scripts/node_search.js"></script>
+</body>
+</html>

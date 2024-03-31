@@ -24,7 +24,9 @@ function extract_nodes_from_network_and_add_to_dictionary(network){
     var dictionary = get_node_dictionary()
 
     for (const node of Object.values(network['nodes'])){
-        add_to_node_dictionary(node['name'], node['node_id'], node['node_type'])
+        var node_contents = {'name': node['name'], 'init_token': node['initialise_token']}
+        
+        add_to_node_dictionary(node_contents=node_contents, node_id=node['node_id'], node_type=node['node_type'])
     }
 
 
@@ -117,7 +119,7 @@ function save_node_dictionary(node_dictionary){
 
 
 
-function add_to_node_dictionary(node_name, node_id, node_type){
+function add_to_node_dictionary(node_contents, node_id, node_type){
 
     var node_dictionary = get_node_dictionary()
 
@@ -130,7 +132,7 @@ function add_to_node_dictionary(node_name, node_id, node_type){
         console.log('node already in dictionary')
         return false;
     }else {
-        node_dictionary[node_type][node_id] = node_name;
+        node_dictionary[node_type][node_id] = node_contents;
     }
 
     save_node_dictionary(node_dictionary)
@@ -233,5 +235,14 @@ function render_network_path(network_name){
     return 'data/' + network_name + '.json'
 }
 
+
+function node_types_list(){
+    return ['ElectoralCommissionRegulatedEntity', 'ElectoralCommissionDonor', 
+    'OffshoreLeaksAddress', 'OffshoreLeaksEntity', 'OffshoreLeaksIntermediary', 'OffshoreLeaksOfficer', 'OffshoreLeaksOther',
+'CompaniesHouseOfficer', 'CompaniesHouseCompany'
+]
+}
+
+
 module.exports = {update_existing_network, add_new_network, get_network, name_in_library, 
-    get_network_name_list, get_name_from_uuid, get_node_dictionary, get_node_name, get_node_names_of_type, add_to_node_dictionary}
+    get_network_name_list, get_name_from_uuid, get_node_dictionary, get_node_name, get_node_names_of_type, add_to_node_dictionary, node_types_list}
