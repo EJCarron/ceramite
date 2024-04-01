@@ -1,3 +1,5 @@
+var not_include_types = ['SameAsCentre']
+
 
 function create_table(node_type, nodes, tables_div, disable_expanded){
     var new_table = document.createElement("table");
@@ -63,7 +65,9 @@ function render_network_selectable(network, render_div, disable_expanded){
 
 
     for (const [node_type, nodes] of Object.entries(nodes_split_by_type)) {
-        create_table(node_type, nodes, render_div, disable_expanded)
+        if (!not_include_types.includes(node_type)){
+            create_table(node_type, nodes, render_div, disable_expanded)
+        }
     }
 
 }

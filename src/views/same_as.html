@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Same As</title>
+    <link rel="stylesheet" href="../styles/modal.css">
+    <link rel="stylesheet" href="../styles/switch.css">
+    <link rel="stylesheet" href="../styles/autocomplete_input.css">
+    <link rel="stylesheet" href="../styles/compare_table.css">
+</head>
+<body>
+    <div id="modal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <p id="modal_message"></p>
+          <button id="modal_btn">OKAY</button>
+        </div>
+      </div>
+    <a href="../../public/index.html">
+        <button><-- BACK</button>
+    </a>
+    <h1>Same As</h1>
+    <div class="autocomplete" style="width:300px;">
+        <input id="networkNameInput" type="text" name="networkName" placeholder="Network Name">
+      </div>
+      <button id="select_network_btn" onclick="select_network_btn_onclick()">select</button>
+    <hr>
+    <div id="network_div"></div>
+    <hr>
+    <button onclick="make_connection_btn_onclick()">make connection</button>
+    
+    <script src="../scripts/same_as.js"></script>
+</body>
+</html>
